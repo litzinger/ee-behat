@@ -1,0 +1,15 @@
+default:
+  autoload: Test/Context
+  suites:
+    default:
+      paths:
+        features: Test/Features
+      contexts:
+        - FieldContext: ~
+        - BrowserContext: ~
+        - SuiteContext: ~
+  extensions:
+    Behat\MinkExtension:
+      base_url: http://path-to-site-selenium-will-use.dev
+      # Change to goutte for headless testing, or browserkit for Safari testing.
+      selenium2: ~

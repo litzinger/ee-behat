@@ -1,0 +1,4 @@
+#!/usr/bin/env php
+<?php
+
+exec('java -jar ~/path/to/selenium-server-standalone-2.47.1.jar');
