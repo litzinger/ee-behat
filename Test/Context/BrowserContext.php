@@ -8,8 +8,6 @@ class BrowserContext extends MinkContext
      */
     public function __construct()
     {
-        // Bootstrap EE()
-        // require_once 'ee.php';
     }
 
     /**

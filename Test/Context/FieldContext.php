@@ -12,8 +12,6 @@ class FieldContext implements Context
      */
     public function __construct()
     {
-        // Bootstrap EE()
-        require_once 'ee.php';
     }
 
     /**
@@ -21,7 +19,6 @@ class FieldContext implements Context
      */
     public static function setup($event)
     {
-
     }
 
     /**
@@ -32,7 +29,6 @@ class FieldContext implements Context
      */
     public static function teardown($event)
     {
-
     }
 
     /**
