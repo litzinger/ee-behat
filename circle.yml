@@ -1,0 +1,40 @@
+machine:
+
+  timezone:
+    America/Chicago
+
+  php:
+    version:
+      5.5.21
+
+  hosts:
+    circlehost: 127.0.0.1
+    ee300.dev: 127.0.0.1
+
+dependencies:
+  pre:
+    # Since EE is installed at the root of the VM, move the Publisher folders
+    # to distinct directories to avoid conflicts.
+    - mv themes pub_themes
+    - mv third_party pub_third_party
+    # Fetch the latest version of EE from your Dropbox or some other private location
+    - wget https://www.dropbox.com/PATH-TO-FILES/ExpressionEngine3.1.1.zip
+    - unzip ExpressionEngine3.1.1.zip
+    # Also fetch a config file to use for EE. See system/user/config/config.php
+    - wget https://www.dropbox.com/PATH-TO-FILES/config.php
+    - chmod 666 config.php
+    - chmod 777 /home/ubuntu/publisher/system/user/cache
+    # "install" the custom config
+    - mv config.php system/user/config/config.php
+    # symlink the add-on files to the install location in EE
+    - cd /home/ubuntu/publisher/system/user/addons && ln -s /home/ubuntu/publisher/pub_third_party/publisher publisher
+    - mkdir /home/ubuntu/publisher/themes/user/third_party
+    - cd /home/ubuntu/publisher/themes/user/third_party && ln -s /home/ubuntu/publisher/pub_themes/third_party/publisher publisher
+
+database:
+  override:
+    - mysql -u ubuntu circle_test < /home/ubuntu/publisher/pub_third_party/publisher/Test/ee300_clean.sql
+
+test:
+  override:
+    - cd /home/ubuntu/publisher/pub_third_party/publisher && bin/behat

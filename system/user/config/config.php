@@ -52,6 +52,17 @@ if (PHP_SAPI === 'cli') {
             'pconnect' => FALSE,
             'port' => 8889
         ),
+
+        // Configuration for connecting to CircleCI VM database.
+        // 'expressionengine' => array (
+        //     'hostname' => '127.0.0.1',
+        //     'username' => 'ubuntu',
+        //     'password' => '',
+        //     'database' => 'circle_test',
+        //     'dbdriver' => 'mysqli',
+        //     'dbprefix' => 'exp_',
+        //     'pconnect' => FALSE,
+        // ),
     );
 }
 
