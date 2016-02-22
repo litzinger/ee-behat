@@ -1,7 +1,14 @@
 <?php
 
 $project_url = 'http://ee300.dev/';
-$project_base = realpath('/path/to/your/ee/sandbox/dev300').'/';
+
+// CircleCI
+if (file_exists('/home/ubuntu/publisher')) {
+    $project_base = realpath('/home/ubuntu/publisher').'/';
+} else {
+    $project_base = realpath('/Users/blitzing/Dropbox/ee/sandboxes/dev300').'/';
+}
+
 $system_path = $project_base . 'system';
 $debug = 2;
 
@@ -15,6 +22,10 @@ $_SERVER = array(
     'REQUEST_URI' => '',
     'argv' => array(),
 );
+
+if (PHP_SAPI === 'cli') {
+    $_SERVER['argv'] = $argv;
+}
 
 // Turn off extensions, we don't need 3rd party hooks
 // running in the middle of our tests.
