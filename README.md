@@ -47,4 +47,13 @@ Setting up CircleCI is surprisingly simple. Customize the circle.yml file as nee
 # Preview
 This is what it looks like when tests are running locally and you're using using Selenium to control the browser. All interactions are scripted and repeatable. If configured properly, CircleCI will run the same tests in a headless browser and take screenshots if a test fails so you can see the browser state on a failed test.
 
+What is happening in this screencast?
+ - A pristine copy of the EE 3.2 database is imported
+ - An admin user is created
+ - 2 templates are added to the EE database
+ - The newly created admin user is used to login to EE
+ - The test navigates to the Add-on Manager page in EE and installes Custom System Messages
+ - It then navigates to the CSM settings page, changes some form fields and saves the settings
+ - It then logs out of EE via the front-end of the site and validates that the logout message contents is that of the template imported into the database based on the saved settings.
+
 ![](preview.gif)
