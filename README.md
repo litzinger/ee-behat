@@ -44,4 +44,7 @@ Run the following commands in two different terminal windows. Selenium needs to 
 
 Setting up CircleCI is surprisingly simple. Customize the circle.yml file as needed and read CircleCI's documentation https://circleci.com/docs/manually. Circle is magical, it installs PHP, MySQL, and nearly everything else you need to get a working VM to run your tests. It just works.
 
+# Preview
+This is what it looks like when tests are running locally and you're using using Selenium to control the browser. All interactions are scripted and repeatable. If configured properly, CircleCI will run the same tests in a headless browser and take screenshots if a test fails so you can see the browser state on a failed test.
+
 ![](preview.gif)
