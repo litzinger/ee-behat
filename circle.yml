@@ -9,32 +9,51 @@ machine:
 
   hosts:
     circlehost: 127.0.0.1
-    ee300.dev: 127.0.0.1
 
 dependencies:
   pre:
-    # Since EE is installed at the root of the VM, move the Publisher folders
+    # Since EE is installed at the root of the VM, move the Addon folders
     # to distinct directories to avoid conflicts.
     - mv themes pub_themes
     - mv third_party pub_third_party
     # Fetch the latest version of EE from your Dropbox or some other private location
-    - wget https://www.dropbox.com/PATH-TO-FILES/ExpressionEngine3.1.1.zip
-    - unzip ExpressionEngine3.1.1.zip
+    - wget https://www.dropbox.com/PATH-TO-FILES/ExpressionEngine3.2.0.zip
+    - unzip ExpressionEngine3.2.0.zip
     # Also fetch a config file to use for EE. See system/user/config/config.php
     - wget https://www.dropbox.com/PATH-TO-FILES/config.php
     - chmod 666 config.php
-    - chmod 777 /home/ubuntu/publisher/system/user/cache
+    - chmod 777 /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/system/user/cache
     # "install" the custom config
     - mv config.php system/user/config/config.php
     # symlink the add-on files to the install location in EE
-    - cd /home/ubuntu/publisher/system/user/addons && ln -s /home/ubuntu/publisher/pub_third_party/publisher publisher
-    - mkdir /home/ubuntu/publisher/themes/user/third_party
-    - cd /home/ubuntu/publisher/themes/user/third_party && ln -s /home/ubuntu/publisher/pub_themes/third_party/publisher publisher
+    - cd /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/system/user/addons && ln -s /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/pub_third_party/YOUR_GITHUB_REPO_SHORT_NAME YOUR_GITHUB_REPO_SHORT_NAME
+    - mkdir /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/themes/user/third_party
+    - cd /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/themes/user/third_party && ln -s /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/pub_themes/third_party/YOUR_GITHUB_REPO_SHORT_NAME YOUR_GITHUB_REPO_SHORT_NAME
+    - cd /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/pub_addons/YOUR_GITHUB_REPO_SHORT_NAME && wget http://selenium-release.storage.googleapis.com/2.47/selenium-server-standalone-2.47.1.jar
+    - cd /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/pub_addons/YOUR_GITHUB_REPO_SHORT_NAME && java -jar selenium-server-standalone-2.47.1.jar:
+        background: true
+
+
+    post:
+      # Copy Apache conf into `site-available`
+      - cp /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/apache-ci.conf /etc/apache2/sites-available
+      # Use `a2ensite` to create a symlink for the config
+      - a2ensite apache-ci.conf
+      # Restart the Apache server
+      - sudo service apache2 restart
 
 database:
   override:
-    - mysql -u ubuntu circle_test < /home/ubuntu/publisher/pub_third_party/publisher/Test/ee300_clean.sql
+    - mysql -u ubuntu circle_test < /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/pub_third_party/YOUR_GITHUB_REPO_SHORT_NAME/Test/ee300_clean.sql
 
 test:
+  pre:
+    - mkdir behat_screenshots
+    - chmod 777 behat_screenshots
   override:
-    - cd /home/ubuntu/publisher/pub_third_party/publisher && bin/behat
+    - cd /home/ubuntu/YOUR_GITHUB_REPO_SHORT_NAME/pub_third_party/YOUR_GITHUB_REPO_SHORT_NAME && bin/behat
+  post:
+    # add a file so that the directory isn't empty (else copy will fail)
+    - touch behat_screenshots/keep
+    - cp behat_screenshots/* $CIRCLE_ARTIFACTS/
+    - rm $CIRCLE_ARTIFACTS/keep

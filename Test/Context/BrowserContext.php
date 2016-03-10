@@ -76,4 +76,54 @@ class BrowserContext extends MinkContext
         }
         $row->clickLink($linkName);
     }
+
+    /**
+     * Looks for a table, then looks for a row that contains the given text.
+     * Once it finds the right row, it clicks a link in that row.
+     *
+     * Really handy when you have a generic "Edit" link on each row of
+     * a table, and you want to click a specific one (e.g. the "Edit" link
+     * in the row that contains "Item #2")
+     *
+     * @When /^I click on "([^"]*)" on the row containing "([^"]*)"$/
+     */
+    public function iClickOnOnTheRowContaining($linkName, $rowText)
+    {
+        /** @var $row \Behat\Mink\Element\NodeElement */
+        $row = $this->getSession()->getPage()->find('css', sprintf('table tr:contains("%s")', $rowText));
+        if (!$row) {
+            throw new \Exception(sprintf('Cannot find any row on the page containing the text "%s"', $rowText));
+        }
+        $row->clickLink($linkName);
+    }
+
+    /**
+     * @AfterStep
+     * @param AfterStepScope $event
+     */
+    public function printLastResponseOnError(AfterStepScope $event)
+    {
+        if (!$event->getTestResult()->isPassed()) {
+            $this->saveDebugScreenshot();
+        }
+    }
+
+    /**
+     * @Then /^save screenshot$/
+     */
+    public function saveDebugScreenshot()
+    {
+        if (!defined('SCREENSHOT_PATH')) {
+            return;
+        }
+
+        $path = SCREENSHOT_PATH;
+        $filename = microtime(true).'.png';
+
+        if (!file_exists($path)) {
+            mkdir($path);
+        }
+
+        $this->saveScreenshot($filename, $path);
+    }
 }

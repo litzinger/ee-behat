@@ -13,7 +13,7 @@ require_once dirname(__FILE__).'/../Test/ee.php';
 
 define('BEHAT_IS_RUNNING', true);
 define('BEHAT_BIN_PATH', __FILE__);
-define('PUBLISHER_PATH', dirname(__FILE__).'/../');
+define('ADDON_PATH', dirname(__FILE__).'/../');
 
 function includeIfExists($file)
 {

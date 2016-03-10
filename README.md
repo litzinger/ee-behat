@@ -8,6 +8,8 @@ You will need to update some server paths and/or database connection info in the
     - Test/Context/SuiteContext.php
     - system/user/config/config.php
     - bin/selenium
+    - circle.yml
+    - apache-ci.conf
 
 This repository is meant to serve as an example of how to get started using Behat to test your
 ExpressionEngine sites. It will not work out of the box... you will need to update or start from scratch with
