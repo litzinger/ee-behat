@@ -43,3 +43,5 @@ Run the following commands in two different terminal windows. Selenium needs to 
 # CircleCI
 
 Setting up CircleCI is surprisingly simple. Customize the circle.yml file as needed and read CircleCI's documentation https://circleci.com/docs/manually. Circle is magical, it installs PHP, MySQL, and nearly everything else you need to get a working VM to run your tests. It just works.
+
+![](preview.gif)
