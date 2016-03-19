@@ -45,4 +45,33 @@ class SuiteContext implements Context, SnippetAcceptingContext
     {
 
     }
+
+    /**
+     * Converts a list to an array. E.g. Then I expect foo to equal "[bar, fizz, baz]"
+     *
+     * @Transform /^\[(.*)\]$/
+     */
+    public function castStringToArray($string)
+    {
+        return explode(',', $string);
+    }
+
+    /**
+     * Update EE's site perferences
+     *
+     * @Given /^I set site config "([^"]*)" to "([^"]*)"$/
+     * @param $key
+     * @param $value
+     */
+    public function iSetSiteConfigTo($key, $value)
+    {
+        $result = ee()->db->select('site_system_preferences')->get('sites');
+        $prefs = $result->row('site_system_preferences');
+
+        $prefs = unserialize(base64_decode($prefs));
+        $prefs[$key] = $value;
+
+        $prefs = base64_encode(serialize($prefs));
+        ee()->db->update('sites', ['site_system_preferences' => $prefs], ['site_id' => 1]);
+    }
 }
