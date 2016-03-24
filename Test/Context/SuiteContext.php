@@ -47,13 +47,22 @@ class SuiteContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * Converts a list to an array. E.g. Then I expect foo to equal "[bar, fizz, baz]"
+     * Take a string formatted as an array in a feature and transform it into an array.
+     * Then I expect an array of "[foo, bar, bazz]"
      *
      * @Transform /^\[(.*)\]$/
+     *
+     * @param $string
+     * @return array
      */
     public function castStringToArray($string)
     {
-        return explode(',', $string);
+        $array = explode(',', $string);
+        array_walk($array, function(&$value) {
+            $value = trim($value);
+        });
+
+        return $array;
     }
 
     /**
