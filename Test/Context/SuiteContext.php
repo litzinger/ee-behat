@@ -66,6 +66,21 @@ class SuiteContext implements Context, SnippetAcceptingContext
     }
 
     /**
+     * Take a string formatted as json in a feature and transform it into an array.
+     * Then I expect "{'entryId': '1', 'status': 'open', 'languageId': '2'}"
+     *
+     * @Transform /^{(.*?)}$/
+     *
+     * @param $string
+     * @return array
+     */
+    public function parseJson($string)
+    {
+        $json = '{'. str_replace("'", '"', $string .'}');
+        return (array) json_decode($json);
+    }
+    
+    /**
      * Update EE's site perferences
      *
      * @Given /^I set site config "([^"]*)" to "([^"]*)"$/
