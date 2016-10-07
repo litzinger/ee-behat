@@ -1,6 +1,6 @@
 # ExpressionEngine Behat Example
 
-### This repository is unsupported.
+### This repository has no official support. Pull requests are welcome.
 
 You will need to update some server paths and/or database connection info in the following files:
 
